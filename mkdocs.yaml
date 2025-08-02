@@ -1,0 +1,66 @@
+site_name: CruxGen
+site_description: LLM-ready datasets. Straight from the source.
+site_author: Prathamesh Kulkarni
+repo_url: https://github.com/VajraM-dev/CruxGen.git
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.tabs.link
+    - content.code.select
+    - content.code.annotate
+
+nav:
+  - Home: summary.md
+  - Project Documentation: 
+      - Business Requirements: project_planning/brd.md
+      - User Stories: project_planning/user_stories.md
+      - Tasks: project_planning/tasks.md
+      - Test Cases: project_planning/test_cases.md
+      - Outcomes: project_planning/outcomes.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/kprathamesh/
+    - icon: fontawesome/brands/github
+      link: https://github.com/VajraM-dev
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+
+plugins:
+  - search
