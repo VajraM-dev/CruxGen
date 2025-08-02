@@ -33,7 +33,7 @@ theme:
     - content.code.annotate
 
 nav:
-  - Home: summary.md
+  - Home: index.md
   - Project Documentation: 
       - Business Requirements: project_planning/brd.md
       - User Stories: project_planning/user_stories.md
