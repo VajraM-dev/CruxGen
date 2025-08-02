@@ -1,6 +1,7 @@
 site_name: CruxGen
 site_description: LLM-ready datasets. Straight from the source.
 site_author: Prathamesh Kulkarni
+site_url: https://github.com/VajraM-dev/CruxGen
 repo_url: https://github.com/VajraM-dev/CruxGen.git
 
 theme:
