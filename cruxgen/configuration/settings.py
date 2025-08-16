@@ -7,3 +7,9 @@ class Config:
         self.MINIO_ACCESS_KEY = read_secret_result['data']['data']['MINIO_ACCESS_KEY']
         self.MINIO_SECRET_KEY = read_secret_result['data']['data']['MINIO_SECRET_KEY']
         self.MINIO_SECURE = read_secret_result['data']['data']['MINIO_SECURE']
+
+        self.POSTGRESQL_HOST = read_secret_result['data']['data']['PORTGRES_HOST']
+        self.POSTGRESQL_PORT = read_secret_result['data']['data']['POSTGRES_PORT']
+        self.POSTGRESQL_USER = read_secret_result['data']['data']['POSTGRES_USERNAME']
+        self.POSTGRESQL_PASSWORD = read_secret_result['data']['data']['POSTGRES_PASSWORD']
+        self.POSTGRESQL_DB = read_secret_result['data']['data']['POSTGRES_DATABASE']

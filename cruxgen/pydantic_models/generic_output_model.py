@@ -11,3 +11,11 @@ class OutputResponse(BaseModel):
     success: bool = True
     message: str = "Operation successful."
     output: Optional[Any] = None
+
+class APIOutputResponse(OutputResponse):
+    """
+    A specialized version of OutputResponse for API-specific responses.
+    This class can be used to return API-specific data structures.
+    """
+    status_code: int = 200
+    response: Optional[Any] = None
