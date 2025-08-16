@@ -1,0 +1,12 @@
+[project]
+name = "cruxgen"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "hvac>=2.3.0",
+    "minio>=7.2.16",
+    "pyfuncmonitor>=0.1.2",
+    "python-dotenv>=1.1.1",
+]
