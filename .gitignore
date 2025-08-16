@@ -421,3 +421,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project-specific files
+*.log*
+qa_bot.ipynb
+test.py
+*.env
+config.env
