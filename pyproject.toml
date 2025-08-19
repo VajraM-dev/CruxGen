@@ -1,7 +1,7 @@
 [project]
 name = "cruxgen"
 version = "0.1.0"
-description = "Add your description here"
+description = "Create LLM-ready datasets. Straight from the source."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -11,6 +11,7 @@ dependencies = [
     "psycopg2>=2.9.10",
     "pyfuncmonitor>=0.1.2",
     "python-dotenv>=1.1.1",
+    "python-multipart>=0.0.20",
     "sqlalchemy>=2.0.43",
     "uvicorn>=0.35.0",
 ]

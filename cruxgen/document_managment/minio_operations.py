@@ -35,6 +35,9 @@ def upload_file(params: MinioUploadFile):
 def list_objects(params: MinioListObjects):
     try:
         objects = client.list_objects(params.bucket_name, prefix=params.prefix, recursive=params.recursive)
+        print(objects)
+        if not objects:
+            return OutputResponse(success=True, message=f"No objects found in bucket '{params.bucket_name}'")
         return OutputResponse(
             success=True,
             message=f"Objects in bucket '{params.bucket_name}' listed successfully",
@@ -55,10 +58,20 @@ def download_file(params: MinioDownloadFile):
 def get_object_info(params: MinioObjectInfo):
     try:
         stat = client.stat_object(params.bucket_name, params.object_name)
+
+        stats_dict = {
+            "Name": stat.object_name,
+            "ETag": stat.etag,
+            "Size": f"{stat.size} bytes",
+            "Last Modified": stat.last_modified,
+            "Content Type": stat.content_type,
+            "Tags": stat.tags,
+            # "Metadata": stat.metadata.__dict__
+        }
         return OutputResponse(
             success=True,
             message=f"Object '{params.object_name}' info retrieved successfully",
-            output=stat
+            output=stats_dict
         )
     except Exception as e:
         return OutputResponse(success=False, message=f"Error retrieving object info: {e}")
