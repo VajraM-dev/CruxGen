@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, UploadFile, File
 from cruxgen.document_managment.minio_operations import (
     create_bucket,
     upload_file,
@@ -26,6 +26,10 @@ from cruxgen.database.crud_functions import (
     delete_file,
     Session
 )
+
+import os
+import shutil
+import tempfile
 
 router = APIRouter()
 
@@ -66,17 +70,22 @@ async def create_bucket_endpoint(params: MinioBucket):
             response=None
         )
 
+# This endpoint is used to upload a file to a MinIO bucket
 @router.post("/upload-file", 
     response_model=APIOutputResponse,
     summary="Upload a file to a MinIO bucket",
     description="This endpoint allows you to upload a file to a specified bucket in MinIO. " \
     "You need to provide the bucket name, object name, and file path in the request body."
 )
-async def upload_file_endpoint(params: MinioUploadFile):
+async def upload_file_endpoint(
+    file: UploadFile = File(...),
+    bucket_name: str = "default-bucket",
+):
+    file_name = file.filename
 
     try:
         # Check if the file already exists in the database
-        existing_file = get_file_id_by_name(db, file_name=params.object_name)
+        existing_file = get_file_id_by_name(db, file_name=file_name)
         if existing_file:
             return APIOutputResponse(
                 success=False,
@@ -93,8 +102,7 @@ async def upload_file_endpoint(params: MinioUploadFile):
         )
     
     try:
-        # add file to database
-        create_file(db, file_name=params.object_name, dataset_generated=False)
+        create_file(db, file_name=file_name, dataset_generated=False)
     except Exception as e:
         return APIOutputResponse(
             success=False,
@@ -104,6 +112,18 @@ async def upload_file_endpoint(params: MinioUploadFile):
         )
 
     try:
+        temp_dir = tempfile.mkdtemp()
+        temp_file_path = os.path.join(temp_dir, file.filename)
+
+        with open(temp_file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        params = MinioUploadFile(
+            bucket_name=bucket_name,
+            object_name=file_name,
+            file_path=temp_file_path  
+        )
+
         output = upload_file(params)
 
         # Extract the 'result' dictionary from the output

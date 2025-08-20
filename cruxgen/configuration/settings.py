@@ -13,3 +13,6 @@ class Config:
         self.POSTGRESQL_USER = read_secret_result['data']['data']['POSTGRES_USERNAME']
         self.POSTGRESQL_PASSWORD = read_secret_result['data']['data']['POSTGRES_PASSWORD']
         self.POSTGRESQL_DB = read_secret_result['data']['data']['POSTGRES_DATABASE']
+
+        self.LITELLM_URL = read_secret_result['data']['data']['LITELLM_BASE_URL']
+        self.LITELLM_API_KEY = read_secret_result['data']['data']['LITELLM_API_KEY']

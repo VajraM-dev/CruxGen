@@ -13,16 +13,14 @@ def test_db_connection():
     """
     Tests the database connection by executing a simple query.
     """
-    print("Attempting to connect to the database...")
     try:
         # Use a connection context manager to ensure the connection is closed
         with engine.connect() as _:
             # Execute a simple query to test the connection
-            print("Database connection successful!")
+            return True
 
     except OperationalError as e:
-        print("Database connection failed!")
-        print(f"Error: {e}")
+        return False
 
 def get_database():
     # engine, _ = setup_database(DATABASE_URL)

@@ -24,3 +24,19 @@ read_secret_result = client.secrets.kv.v2.read_secret_version(
             path=PATH,
             raise_on_deleted_version=True
         )
+
+def test_vault_connection():
+    """
+    Tests the Vault connection by reading a secret.
+    """
+    try:
+        # Attempt to read a secret to verify the connection
+        client.secrets.kv.v2.read_secret_version(
+            mount_point=MOUNT_POINT,
+            path=PATH,
+            raise_on_deleted_version=True
+        )
+        return True
+    except hvac.exceptions.InvalidRequest as e:
+        print(f"Invalid request: {e}")
+        return False
