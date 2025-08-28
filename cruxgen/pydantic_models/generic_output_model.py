@@ -12,7 +12,7 @@ class OutputResponse(BaseModel):
     message: str = "Operation successful."
     output: Optional[Any] = None
 
-class APIOutputResponse(OutputResponse):
+class APIOutputResponse(BaseModel):
     """
     A specialized version of OutputResponse for API-specific responses.
     This class can be used to return API-specific data structures.
