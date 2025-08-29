@@ -35,7 +35,6 @@ def upload_file(params: MinioUploadFile):
 def list_objects(params: MinioListObjects):
     try:
         objects = client.list_objects(params.bucket_name, prefix=params.prefix, recursive=params.recursive)
-        print(objects)
         if not objects:
             return OutputResponse(success=True, message=f"No objects found in bucket '{params.bucket_name}'")
         return OutputResponse(

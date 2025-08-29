@@ -3,6 +3,7 @@
 from sqlalchemy.orm import sessionmaker, declarative_base
 from cruxgen.database.crud_models import File, Chunk, QAPair
 from cruxgen.database.db_config import engine
+from typing import List
 
 Base = declarative_base()
 
@@ -52,6 +53,13 @@ def create_chunk(session, file_id, chunk_text):
     session.commit()
     return new_chunk
 
+def create_chunks_bulk(session, file_id: str, chunk_texts: List[str]):
+   """Creates multiple Chunk records in bulk."""
+   chunks = [Chunk(file_id=file_id, chunk_text=text) for text in chunk_texts]
+   session.add_all(chunks)
+   session.commit()
+   return chunks
+
 def get_chunk_by_id(session, chunk_id):
     """Retrieves a Chunk by its ID."""
     return session.query(Chunk).filter_by(chunk_id=chunk_id).one_or_none()
@@ -73,6 +81,20 @@ def delete_chunk(session, chunk_id):
         session.commit()
         return True
     return False
+
+def delete_chunks_by_file_id(session, file_id: str):
+   """Deletes all Chunks for a given file_id."""
+   deleted_count = session.query(Chunk).filter_by(file_id=file_id).delete()
+   session.commit()
+   return deleted_count
+
+def get_chunks_by_file_id(session, file_id: str):
+   """Gets all chunks for a given file_id."""
+   return session.query(Chunk).filter_by(file_id=file_id).all()
+
+def chunks_exist_for_file(session, file_id: str) -> bool:
+    """Checks if chunks exist for a given file_id."""
+    return session.query(Chunk).filter_by(file_id=file_id).first() is not None
 
 # qa_pair -------------------------------------
 

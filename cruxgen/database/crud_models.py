@@ -36,7 +36,7 @@ class Chunk(Base):
     __tablename__ = 'chunks'
 
     chunk_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    file_id = Column(UUID(as_uuid=True), ForeignKey('files.file_id'), unique=True, nullable=False)
+    file_id = Column(UUID(as_uuid=True), ForeignKey('files.file_id'), unique=False, nullable=False)
     chunk_text = Column(String, nullable=False)
 
     # Defines a one-to-one relationship to File.

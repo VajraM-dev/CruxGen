@@ -3,6 +3,7 @@ import uvicorn
 from cruxgen.database.db_config import test_db_connection
 # import routers
 from cruxgen.document_managment.document_router import router as document_router
+from cruxgen.llm_management.chunker.chunking_router import router as chunking_router
 from cruxgen.document_managment.minio_config import client as minio_client
 from cruxgen.configuration.vault_config import test_vault_connection
 
@@ -10,6 +11,7 @@ app = FastAPI()
 
 # Include routers
 app.include_router(document_router, prefix="/document", tags=["Document Management"])
+app.include_router(chunking_router, prefix="/chunks", tags=["Chunk Management"])
 
 @app.get("/")
 async def read_root():
