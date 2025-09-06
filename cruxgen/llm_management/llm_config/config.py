@@ -24,7 +24,7 @@ def get_llm_response(params: LLMRequest) -> APIOutputResponse:
                 {"role": "user", "content": params.prompt}
             ],
             response_format=ResponseModel,
-            temperature=0.5
+            temperature=0.3
         )
 
         parsed = response.choices[0].message.parsed

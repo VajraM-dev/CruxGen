@@ -16,3 +16,6 @@ class Config:
 
         self.LITELLM_URL = read_secret_result['data']['data']['LITELLM_BASE_URL']
         self.LITELLM_API_KEY = read_secret_result['data']['data']['LITELLM_API_KEY']
+
+        self.SYSTEM_PROMPT_PATH = "cruxgen/llm_management/prompts/qa_system.md"
+        self.USER_PROMPT_PATH = "cruxgen/llm_management/prompts/qa_user.md"

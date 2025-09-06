@@ -57,7 +57,7 @@ class QAPair(Base):
     __tablename__ = 'qa_pairs'
 
     qa_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    chunk_id = Column(UUID(as_uuid=True), ForeignKey('chunks.chunk_id'), unique=True, nullable=False)
+    chunk_id = Column(UUID(as_uuid=True), ForeignKey('chunks.chunk_id'), nullable=False)
     question = Column(String, nullable=False)
     answer = Column(String, nullable=False)
 
