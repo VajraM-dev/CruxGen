@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from cruxgen.pydantic_models.generic_output_model import APIOutputResponse, OutputResponse
+from cruxgen.pydantic_models.generic_output_model import APIOutputResponse
 from cruxgen.llm_management.chunker.document_chunker import DocumentSplitter, ChunkerConfig
 from cruxgen.database.crud_functions import delete_chunks_by_file_id, Session, get_chunks_by_file_id
 from pydantic import BaseModel, Field
