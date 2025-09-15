@@ -1,9 +1,9 @@
 [project]
 name = "cruxgen-sdk"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.1"
+description = "Call CruxGen Server APIs with ease."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "httpx>=0.28.1",
     "orjson>=3.11.3",
