@@ -3,7 +3,8 @@ from typing import List
 from pydantic import BaseModel, Field, field_validator
 from langchain_docling.loader import ExportType
 from docling.chunking import HybridChunker
-from langchain_docling import DoclingLoader
+# from langchain_docling import DoclingLoader
+from docling.document_converter import DocumentConverter
 from langchain_text_splitters import MarkdownHeaderTextSplitter
 from cruxgen.configuration.logging_config import monitor
 import tempfile
@@ -19,7 +20,7 @@ class ChunkerConfig(BaseModel):
     model_id: str = Field(default="Qwen/Qwen3-Embedding-0.6B")
     export_type: ExportType = Field(default=ExportType.DOC_CHUNKS)
     embedding_dimensions: int = Field(default=1024, gt=0)
-    max_tokens: int = Field(default=1000, gt=0)
+    max_tokens: int = Field(default=1024, gt=0)
     
     @field_validator('model_id')
     def validate_model_id(cls, v):
@@ -39,29 +40,45 @@ class DocumentSplitter:
             raise RuntimeError(f"Failed to initialize chunker: {e}")
         
     # @monitor
+    # def _load_doc_split(self, file_path: Path) -> List[str]:
+    #     if not file_path.exists():
+    #         raise FileNotFoundError(f"File not found: {file_path}")
+        
+    #     try:
+    #         loader = DoclingLoader(
+    #             file_path=str(file_path),
+    #             export_type=self.config.export_type,
+    #             chunker=self.chunker
+    #         )
+    #         docs = loader.load()
+            
+    #         if not docs:
+    #             return []
+
+    #         splits = self._process_docs(docs)
+            
+    #     except Exception as e:
+    #         raise RuntimeError(f"Failed to load document: {e}")
+        
+    #     return [split.page_content for split in splits if hasattr(split, 'page_content')]
+    
     def _load_doc_split(self, file_path: Path) -> List[str]:
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
         
         try:
-            loader = DoclingLoader(
-                file_path=str(file_path),
-                export_type=self.config.export_type,
-                chunker=self.chunker
-            )
-            docs = loader.load()
-            
-            if not docs:
-                return []
+            converter = DocumentConverter()
+            doc = converter.convert(file_path).document
+            chunk_iter = self.chunker.chunk(dl_doc=doc)
 
-            splits = self._process_docs(docs)
-            
+            enriched_text = []
+            for _, chunk in enumerate(chunk_iter):
+                enriched_text.append(self.chunker.contextualize(chunk=chunk) + "\n\n")
+
+            return enriched_text
         except Exception as e:
             raise RuntimeError(f"Failed to load document: {e}")
-        
-        return [split.page_content for split in splits if hasattr(split, 'page_content')]
 
-    # @monitor
     def _process_docs(self, docs):
         if self.config.export_type == ExportType.DOC_CHUNKS:
             return docs
@@ -86,7 +103,6 @@ class DocumentSplitter:
         else:
             raise ValueError(f"Unsupported export type: {self.config.export_type}")
 
-    # @monitor
     def _club_chunks(self, chunks: List[str], max_tokens: int) -> List[str]:
         if not chunks:
             return []
@@ -140,7 +156,7 @@ class DocumentSplitter:
             splits = self._load_doc_split(temp_file)
 
             if not splits:
-                return []
+                return OutputResponse(success=False, message="Error creating chunks from chunker. Got empty list.") #[]
             
             splits = self._club_chunks(splits, self.config.max_tokens)
             
