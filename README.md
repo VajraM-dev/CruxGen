@@ -30,37 +30,6 @@ Your Documents → Upload → Chunk → AI Processing → Q&A Dataset
 3. **Generate** Q&A pairs using context-aware AI
 4. **Export** structured datasets for training
 
-## Quick Start
-
-### Installation
-```bash
-uv pip install -r requirements.txt
-```
-
-### Run Server
-```bash
-python main.py
-```
-Server available at `http://localhost:8000`
-
-### Basic Workflow
-
-1. **Upload Document**
-   - POST to `/document/upload-file`
-   - Specify bucket and upload your file
-
-2. **Create Chunks**
-   - POST to `/chunks/create-chunks`
-   - System intelligently segments your document
-
-3. **Generate Q&A Pairs**
-   - POST to `/qa/process-chunks-to-qa`
-   - AI creates contextual question-answer pairs
-
-4. **Export Dataset**
-   - GET `/qa/get-qa-pairs/{file_id}`
-   - Download as JSON or JSONL format
-
 ## Tech Foundation
 
 Built with enterprise-grade components:
@@ -69,10 +38,6 @@ Built with enterprise-grade components:
 - **MinIO** for scalable object storage
 - **Pydantic** for data validation
 - **HashiCorp Vault** for secure configuration
-
-## Health Monitoring
-
-Check system status at `/health` - validates database, storage, and configuration services.
 
 ## Use Cases
 
