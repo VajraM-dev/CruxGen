@@ -1,3 +1,4 @@
+- Deployment ready docker and docker compose
 - Adding async support in sdk
 - Handling batch processing
 - Implementing Celery and RabbitMQ for advanced processing
