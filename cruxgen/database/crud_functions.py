@@ -128,6 +128,40 @@ def delete_qa_pair(session, qa_id):
         return True
     return False
 
+def delete_qa_pairs_by_file_id(session, file_id: str):
+   """Deletes all QAPairs for a given file_id."""
+   deleted_count = (
+        session.query(QAPair)
+        .filter(
+            QAPair.chunk_id.in_(
+                session.query(Chunk.chunk_id).filter(Chunk.file_id == file_id)
+            )
+        )
+        .delete(synchronize_session=False)
+    )
+   session.commit()
+   return deleted_count
+
+def qa_pairs_exist_for_file(session, file_id: str) -> bool:
+    """Checks if QA pairs exist for a given file_id."""
+    return (
+        session.query(QAPair)
+        .join(Chunk, QAPair.chunk_id == Chunk.chunk_id)
+        .filter(Chunk.file_id == file_id)
+        .first()
+        is not None
+    )
+
+def get_qa_pairs_by_file_id(session, file_id: str):
+    """Gets all QA pairs for a given file_id."""
+    qa_pairs = (
+        session.query(QAPair)
+        .join(Chunk, QAPair.chunk_id == Chunk.chunk_id)
+        .filter(Chunk.file_id == file_id)
+        .all()
+    )
+    questions_answers = [{"question": qa.question, "answer": qa.answer} for qa in qa_pairs]
+    return questions_answers
 # Example usage:
 # if __name__ == '__main__':
 #     with Session() as session:

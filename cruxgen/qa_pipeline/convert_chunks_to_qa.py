@@ -1,6 +1,6 @@
 from cruxgen.configuration.settings import Config
 from cruxgen.llm_management.llm_config.config import get_llm_response
-from cruxgen.database.crud_functions import create_qa_pair, get_chunks_by_file_id, Session, get_chunk_by_id
+from cruxgen.database.crud_functions import create_qa_pair, get_chunks_by_file_id, Session, get_chunk_by_id, delete_qa_pairs_by_file_id, qa_pairs_exist_for_file, get_qa_pairs_by_file_id
 from cruxgen.llm_management.parsers.models import LLMRequest
 from cruxgen.llm_management.prompts.prompt_loader import load_and_format_prompt
 from tenacity import retry, stop_after_attempt, wait_exponential
@@ -86,3 +86,22 @@ def process_chunks(file_id: str, chunk_id: Optional[str] = None):
        return OutputResponse(success=True, message=message)
    except Exception as e:
        return OutputResponse(success=False, message=f"Error processing chunks: {e}")
+
+@monitor
+def delete_qa_pairs_for_file(file_id: str):
+    try:
+        deleted_count = delete_qa_pairs_by_file_id(db, file_id)
+        return OutputResponse(success=True, message=f"Deleted {deleted_count} QA pairs for file_id: {file_id}")
+    except Exception as e:
+        return OutputResponse(success=False, message=f"Error deleting QA pairs for file_id: {file_id}: {e}")
+
+@monitor
+def get_all_qa_pairs(file_id: str):
+    try:
+        if not qa_pairs_exist_for_file(db, file_id):
+            return OutputResponse(success=False, message=f"No QA pairs found for file_id: {file_id}")
+
+        qa_pairs = get_qa_pairs_by_file_id(db, file_id)
+        return OutputResponse(success=True, message=f"Retrieved {len(qa_pairs)} QA pairs for file_id: {file_id}", output=qa_pairs)
+    except Exception as e:
+        return OutputResponse(success=False, message=f"Error retrieving QA pairs for file_id: {file_id}: {e}")
