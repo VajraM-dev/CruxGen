@@ -72,9 +72,9 @@ async def delete_chunks_endpoint(params: DeleteChunk):
         # Extract the 'result' dictionary from the output
         result_data = output.get('result', {})
         # Use the values directly from the dictionary to build the APIOutputResponse
-        success_status = result_data.get('success', False)
-        response_message = result_data.get('message', 'No message provided')
-        response_payload = result_data.get('output')
+        success_status = output.get('success', False)
+        response_message = output.get('message', 'No message provided')
+        response_payload = output.get('output')
         return APIOutputResponse(
             success=success_status,
             message=response_message,
@@ -103,11 +103,11 @@ async def get_chunks_endpoint(file_id: str):
             "result": {},
             "success": True,
             "message": "Retreived chunks successfully",
-            "output": chunks
+            "output": [chunk.chunk_text for chunk in chunks]
         }
 
         # Extract the 'result' dictionary from the output
-        result_data = output.get('result', {})
+        result_data = output
         # Use the values directly from the dictionary to build the APIOutputResponse
         success_status = result_data.get('success', False)
         response_message = result_data.get('message', 'No message provided')
