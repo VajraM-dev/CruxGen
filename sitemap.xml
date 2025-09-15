@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/future_work/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/sdk/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/api_routers/chunk_management/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/api_routers/document_router/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/api_routers/main/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/VajraM-dev/CruxGen/api_routers/qa_management/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+</urlset>
