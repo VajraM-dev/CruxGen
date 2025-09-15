@@ -10,7 +10,7 @@ from cruxgen.configuration.logging_config import monitor
 import tempfile
 from cruxgen.document_managment.minio_config import client
 from cruxgen.pydantic_models.generic_output_model import OutputResponse
-from cruxgen.database.crud_functions import get_file_by_id, Session, create_chunks_bulk, chunks_exist_for_file
+from cruxgen.database.crud_functions import get_file_by_id, Session, create_chunks_bulk, chunks_exist_for_file, update_dataset_generated
 
 with Session() as session:
     # Create a new session for database operations
@@ -162,6 +162,8 @@ class DocumentSplitter:
             
             _ = create_chunks_bulk(db, file_id=file_id, chunk_texts=splits)
 
+            update_dataset_generated(db, file_id, True)
+            
             return OutputResponse(
                 success=True,
                 message="Splits created",

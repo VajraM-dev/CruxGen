@@ -35,6 +35,15 @@ def update_file_name(session, file_id, new_file_name):
         return file
     return None
 
+def update_dataset_generated(session, file_id, dataset_generated):
+    """Updates the dataset_generated flag for a given file ID."""
+    file = get_file_by_id(session, file_id)
+    if file:
+        file.dataset_generated = dataset_generated
+        session.commit()
+        return file
+    return None
+
 def delete_file(session, file_id):
     """Deletes a File and its related records (Chunk, QAPair) via cascading delete."""
     file = get_file_by_id(session, file_id)

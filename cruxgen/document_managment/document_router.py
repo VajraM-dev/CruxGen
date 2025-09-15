@@ -24,7 +24,9 @@ from cruxgen.database.crud_functions import (
     create_file,
     get_file_id_by_name,
     delete_file,
-    Session
+    Session,
+    delete_qa_pairs_by_file_id,
+    delete_chunks_by_file_id
 )
 
 import os
@@ -102,7 +104,7 @@ async def upload_file_endpoint(
         )
     
     try:
-        create_file(db, file_name=file_name, dataset_generated=False)
+        new_file = create_file(db, file_name=file_name, dataset_generated=False)
     except Exception as e:
         return APIOutputResponse(
             success=False,
@@ -132,13 +134,13 @@ async def upload_file_endpoint(
         # Use the values directly from the dictionary to build the APIOutputResponse
         success_status = result_data.get('success', False)
         response_message = result_data.get('message', 'No message provided')
-        response_payload = result_data.get('output')
+        # response_payload = result_data.get('output')
 
         return APIOutputResponse(
             success=success_status,
             message=response_message,
             status_code=status.HTTP_201_CREATED if success_status else status.HTTP_400_BAD_REQUEST,
-            response=response_payload
+            response=new_file.file_id
         )
     except Exception as e:
         return APIOutputResponse(
@@ -167,6 +169,8 @@ async def delete_object_endpoint(params: MinioDeleteObject):
                 status_code=status.HTTP_404_NOT_FOUND,
                 response=None
             )
+        delete_qa_pairs_by_file_id(db, file_id=file_id.file_id)
+        delete_chunks_by_file_id(db, file_id=file_id.file_id)
         delete_file(db, file_id=file_id.file_id)
     except Exception as e:
         return APIOutputResponse(
@@ -319,6 +323,35 @@ async def get_object_info_endpoint(bucket_name: str, object_name: str):
         return APIOutputResponse(
             success=False,
             message=f"Error getting object info: {str(e)}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            response=None
+        )
+    
+@router.get("/get_file_id_from_name",
+    response_model=APIOutputResponse,
+    summary="Get file ID from file name",
+    description="This endpoint allows you to retrieve the file ID associated with a given file name from the database."
+)
+async def get_file_id_from_name_endpoint(file_name: str):
+    try:
+        file_record = get_file_id_by_name(db, file_name=file_name)
+        if not file_record:
+            return APIOutputResponse(
+                success=False,
+                message="File not found in the database.",
+                status_code=status.HTTP_404_NOT_FOUND,
+                response=None
+            )
+        return APIOutputResponse(
+            success=True,
+            message="File ID retrieved successfully.",
+            status_code=status.HTTP_200_OK,
+            response=file_record.file_id
+        )
+    except Exception as e:
+        return APIOutputResponse(
+            success=False,
+            message=f"Error retrieving file ID: {str(e)}",
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             response=None
         )
