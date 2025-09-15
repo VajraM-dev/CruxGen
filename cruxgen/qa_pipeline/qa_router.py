@@ -3,6 +3,9 @@ from fastapi import APIRouter, status
 from cruxgen.pydantic_models.generic_output_model import APIOutputResponse
 from pydantic import BaseModel, Field
 from typing import Optional
+from fastapi.responses import StreamingResponse
+import io
+import json
 
 router = APIRouter()
 
@@ -69,14 +72,6 @@ async def delete_qa_pairs_endpoint(params: DeleteQAFromChunks):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             response=None
         )
-    
-class GetQAForFile(BaseModel):
-    file_id: str = Field(description="The file id of the document you want to get QA pairs for its chunks.")
-    generate_jsonl: Optional[bool] = Field(default=False, description="Set to true if you want the output in JSONL format.")
-
-from fastapi.responses import StreamingResponse
-import io
-import json
 
 @router.get("/get-qa-pairs/{file_id}",
     response_model=APIOutputResponse,
