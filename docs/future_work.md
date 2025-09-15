@@ -1,3 +1,4 @@
 - Adding async support in sdk
 - Handling batch processing
 - Implementing Celery and RabbitMQ for advanced processing
+- Support for more document formats with added support for images and tables
