@@ -34,12 +34,13 @@ theme:
 
 nav:
   - Home: index.md
-  - Project Documentation: 
-      - Business Requirements: project_planning/brd.md
-      - User Stories: project_planning/user_stories.md
-      - Tasks: project_planning/tasks.md
-      - Test Cases: project_planning/test_cases.md
-      - Outcomes: project_planning/outcomes.md
+  - API Reference: 
+      - Main App: api_routers/main.md
+      - Document Management: api_routers/document_router.md
+      - Chunking Router: api_routers/chunk_management.md
+      - QA Router: api_routers/qa_management.md
+  - SDK Reference: sdk.md
+  - Future Work: future_work.md
 
 extra:
   social:

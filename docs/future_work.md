@@ -1,0 +1,3 @@
+- Adding async support in sdk
+- Handling batch processing
+- Implementing Celery and RabbitMQ for advanced processing
